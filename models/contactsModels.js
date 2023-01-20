@@ -29,9 +29,9 @@ const Contact = model("contact", contactSchema);
 
 const listContacts = async (body) => {
   try {
-    const { owner, page, limit } = body;
+    const { owner, page, limit, favorite } = body;
     const skip = (page - 1) * limit;
-    const result = await Contact.find({ owner }, "", {
+    const result = await Contact.find({ owner, favorite }, "", {
       skip,
       limit: Number(limit),
     }).populate("owner", "_id email subscription");
@@ -85,9 +85,14 @@ const removeContact = async (contactId) => {
 
 const updateContactElement = async (contactId, body) => {
   try {
-    const result = Contact.findByIdAndUpdate({ _id: contactId }, body, {
-      new: true,
-    });
+    const { owner, favorite } = body;
+    const result = Contact.findByIdAndUpdate(
+      { _id: contactId, owner: owner },
+      { favorite },
+      {
+        new: true,
+      }
+    );
     return result;
   } catch (error) {
     console.error(error.message);
