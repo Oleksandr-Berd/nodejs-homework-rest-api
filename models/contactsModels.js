@@ -16,15 +16,26 @@ const contactSchema = Schema(
       type: Boolean,
       default: false,
     },
+    owner: {
+      type: Schema.Types.ObjectId,
+      ref: "user",
+      required: true,
+    },
   },
   { versionKey: false, timestamps: true }
 );
 
 const Contact = model("contact", contactSchema);
 
-const listContacts = async () => {
+const listContacts = async (body) => {
   try {
-    const result = await Contact.find({});
+    const { owner, page, limit } = body;
+    const skip = (page - 1) * limit;
+    const result = await Contact.find({ owner }, "", {
+      skip,
+      limit: Number(limit),
+    }).populate("owner", "_id email subscription");
+
     return result;
   } catch (error) {
     console.error(error.message);
@@ -43,8 +54,9 @@ const getContactById = async (contactId) => {
 
 const addContact = async (body) => {
   try {
-    const { name, email, phone } = body;
-    const result = await Contact.create({ name, email, phone });
+    const { name, email, phone, owner } = body;
+
+    const result = await Contact.create({ name, email, phone, owner });
     return result;
   } catch (error) {
     console.error(error.message);
