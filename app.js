@@ -46,7 +46,7 @@ app.post("/api/draftusers", upload.single("image"), async (req, res) => {
   const resultUpload = path.join(avatarsDir, originalname);
   try {
     await fs.rename(tempUpload, resultUpload);
-    const image = path.join("public", "avatars", originalname);
+    const image = path.join("avatars", originalname);
     const draftUser = {
       name: req.body.name,
       id: v4(),
