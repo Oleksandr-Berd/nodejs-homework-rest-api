@@ -1,5 +1,6 @@
 const { Conflict } = require("http-errors");
 const { User } = require("../../models/index");
+const gravatar = require("gravatar");
 const bcrypt = require("bcryptjs");
 
 const register = async (req, res) => {
@@ -10,13 +11,19 @@ const register = async (req, res) => {
   if (user) {
     throw new Conflict(`This email: ${email} in use`);
   }
-  const result = await User.create({ password: passwordHash, email });
+  const avatarURL = gravatar.url(email);
+  const result = await User.create({
+    password: passwordHash,
+    email,
+    avatarURL,
+  });
   res.status(201).json({
     status: "success",
     code: 201,
     data: {
       user: {
         email,
+        avatarURL,
         subscription: "starter",
       },
     },
