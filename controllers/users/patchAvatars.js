@@ -9,13 +9,9 @@ const patchAvatars = async (req, res) => {
   try {
     const resultUpload = path.join(avatarsDir, originalname);
     fs.rename(tempUpload, resultUpload);
-    const avatarURL = path.join(avatarsDir, originalname);
+    const avatarURL = path.join("public", "avatars", originalname);
     console.log(avatarURL);
-    await User.findByIdAndUpdate(
-      req.user._id,
-      { avatarURl: avatarURL },
-      { new: true }
-    );
+    await User.findByIdAndUpdate(req.user._id, { avatarURL });
     res.json({ avatarURL });
   } catch (error) {
     await fs.unlink(tempUpload);
