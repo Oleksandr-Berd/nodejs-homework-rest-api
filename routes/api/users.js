@@ -11,5 +11,6 @@ routerUsers.patch(
   upload.single("avatar"),
   ctrl.patchAvatars
 );
+routerUsers.get("/verify/:verificationToken", ctrl.verifyEmail);
 
 module.exports = routerUsers;
