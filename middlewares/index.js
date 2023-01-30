@@ -8,6 +8,7 @@ const {
 
 const { auth } = require("./auth");
 const ctrlWrapper = require("./ctrlWrapper");
+const upload = require("./multer");
 
 module.exports = {
   postContactValidation,
@@ -17,4 +18,5 @@ module.exports = {
   userLoginValidation,
   auth,
   ctrlWrapper,
+  upload,
 };

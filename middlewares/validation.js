@@ -55,7 +55,7 @@ module.exports = {
           tlds: { allow: ["com", "net"] },
         })
         .required(),
-      subscription: Joi.string().alphanum().min(1).max(20).required(),
+      subscription: Joi.string().alphanum().min(1).max(20),
     });
 
     const { error } = schema.validate(req.body);
